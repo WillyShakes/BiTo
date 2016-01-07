@@ -25,7 +25,7 @@ public class Station {
     private int empty_slots;
     private String description;
     private int free_bikes;
-    private int id;
+    private String id;
     private String latitude;
     private String longitude;
     private String name;
@@ -59,9 +59,11 @@ public class Station {
 
     public Station(JSONObject station) throws JSONException {
         setEmpty_slots(station.getInt(EMPTY_SLOT));
-        setDescription(station.getJSONObject(EXTRA).getString(DESC));
+        JSONObject extra = station.getJSONObject(EXTRA);
+        if(!extra.isNull(DESC))
+            setDescription(extra.getString(DESC));
         setFree_bikes(station.getInt(FREE_BIKES));
-        setId(station.getInt(ID));
+        setId(station.getString(ID));
         setLatitude(station.getString(LAT));
         setLongitude(station.getString(LNG));
         setName(station.getString(NAME));
@@ -92,11 +94,11 @@ public class Station {
         this.free_bikes = free_bikes;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

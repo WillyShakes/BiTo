@@ -1,4 +1,4 @@
-package com.willycode.bito.Presenter;
+package com.willycode.bito.Presenter.FavoriteStation;
 
 import android.content.Context;
 

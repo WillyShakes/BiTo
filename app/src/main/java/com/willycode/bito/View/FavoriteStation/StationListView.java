@@ -1,4 +1,4 @@
-package com.willycode.bito.View;
+package com.willycode.bito.View.FavoriteStation;
 
 import com.willycode.bito.Model.Station;
 

@@ -56,7 +56,7 @@ public class StationContract {
         if (cursor.moveToFirst()) {
             do {
                 Station station;
-                String json = cursor.getString(cursor.getColumnIndex(StationDbHelper.StationEntry.COLUMN_NAME_ID));
+                String json = cursor.getString(cursor.getColumnIndex(StationDbHelper.StationEntry.COLUMN_NAME_JSON));
                 station = new Station(new JSONObject(json));
                 // Adding Station to list
                 StationList.add(station);
