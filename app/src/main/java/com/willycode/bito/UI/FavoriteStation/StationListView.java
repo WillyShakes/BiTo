@@ -1,14 +1,13 @@
-package com.willycode.bito.View.StationPicker;
+package com.willycode.bito.UI.FavoriteStation;
 
-import com.willycode.bito.Model.Station;
+import com.willycode.bito.Data.Model.Station;
 
 import java.util.List;
 
 /**
  * Created by Manuel ELO'O on 05/01/2016.
  */
-public interface StationPickerListView {
-
+public interface StationListView {
     public void setStations(List<Station> stations);
 
     public void showMessage(String message);

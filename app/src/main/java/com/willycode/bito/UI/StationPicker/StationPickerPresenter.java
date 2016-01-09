@@ -1,6 +1,6 @@
-package com.willycode.bito.Presenter.StationPicker;
+package com.willycode.bito.UI.StationPicker;
 
-import com.willycode.bito.Model.Station;
+import com.willycode.bito.Data.Model.Station;
 
 import org.json.JSONException;
 

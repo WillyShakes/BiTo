@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.willycode.bito">
-
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:name=".BitoApp">
         <activity
-            android:name=".View.FavoriteStation.MainActivity"
+            android:name=".UI.FavoriteStation.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -19,10 +21,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".View.StationPicker.StationPickerActivity"
+            android:name=".UI.StationPicker.StationPickerActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <service android:name=".Data.SyncService" />
     </application>
 
 </manifest>

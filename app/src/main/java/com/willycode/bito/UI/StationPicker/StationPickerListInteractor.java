@@ -1,8 +1,8 @@
-package com.willycode.bito.Presenter.StationPicker;
+package com.willycode.bito.UI.StationPicker;
 
 import android.content.Context;
 
-import com.willycode.bito.Model.Station;
+import com.willycode.bito.Data.Model.Station;
 import com.willycode.bito.Utils.OnFinshListener;
 
 import org.json.JSONException;

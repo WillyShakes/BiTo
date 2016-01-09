@@ -1,10 +1,9 @@
-package com.willycode.bito.Presenter.FavoriteStation;
+package com.willycode.bito.UI.FavoriteStation;
 
 import android.content.Context;
 
-import com.willycode.bito.Model.Station;
+import com.willycode.bito.Data.Model.Station;
 import com.willycode.bito.Utils.OnFinshListener;
-import com.willycode.bito.View.FavoriteStation.StationListView;
 
 import java.util.List;
 

@@ -1,9 +1,10 @@
-package com.willycode.bito.Presenter.StationPicker;
+package com.willycode.bito.UI.StationPicker;
 
 import android.content.Context;
 
-import com.willycode.bito.Model.Station;
-import com.willycode.bito.Model.StationContract;
+import com.willycode.bito.Data.DataManager;
+import com.willycode.bito.Data.Model.Station;
+import com.willycode.bito.Data.Local.DatabaseHelper;
 import com.willycode.bito.Utils.JsonParser;
 import com.willycode.bito.Utils.OnFinshListener;
 
@@ -26,10 +27,10 @@ public class StationPickerListInteractorImpl implements StationPickerListInterac
     }
 
     @Override
-    public void saveStation(Station s, Context c) {
-        StationContract sc = new StationContract(c);
+    public void saveStation(Station s,Context c) {
+        DataManager dt = DataManager.getInstance();
         try {
-            sc.addStation(s);
+            dt.addStation(s);
         } catch (JSONException e) {
 
         }

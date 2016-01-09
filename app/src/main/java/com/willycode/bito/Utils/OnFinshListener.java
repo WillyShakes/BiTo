@@ -1,6 +1,6 @@
 package com.willycode.bito.Utils;
 
-import com.willycode.bito.Model.Station;
+import com.willycode.bito.Data.Model.Station;
 
 import java.util.List;
 

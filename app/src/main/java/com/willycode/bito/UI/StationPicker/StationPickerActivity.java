@@ -1,40 +1,49 @@
-package com.willycode.bito.View.FavoriteStation;
+package com.willycode.bito.UI.StationPicker;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.willycode.bito.Adapters.StationAdapter;
-import com.willycode.bito.Model.Station;
-import com.willycode.bito.Presenter.FavoriteStation.StationPresenter;
-import com.willycode.bito.Presenter.FavoriteStation.StationPresenterImpl;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
+import com.willycode.bito.BuildConfig;
+import com.willycode.bito.Data.DataManager;
+import com.willycode.bito.UI.Adapters.StationAdapter;
+import com.willycode.bito.Data.Model.Station;
 import com.willycode.bito.R;
-import com.willycode.bito.View.StationPicker.StationPickerActivity;
+import com.willycode.bito.Utils.Events.GetListStationEvent;
+import com.willycode.bito.Utils.Events.LogEvent;
+import com.willycode.bito.Utils.ItemClickSupport;
+
+import org.json.JSONException;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements StationListView {
+/**
+ * Created by Manuel ELO'O on 07/01/2016.
+ */
+public class StationPickerActivity extends AppCompatActivity implements StationPickerListView {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ProgressBar progressBar;
-    private StationPresenter presenter;
+    private StationPickerPresenter presenter;
+    private Bus mBus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_station_picker);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -43,24 +52,8 @@ public class MainActivity extends AppCompatActivity implements StationListView {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         progressBar = (ProgressBar) findViewById(R.id.progress);
-        presenter = new StationPresenterImpl(this,this);
-
-
-        // Code to Add an item with default animation
-        //((MyRecyclerViewAdapter) mAdapter).addItem(obj, index);
-
-        // Code to remove an item with default animation
-        //((MyRecyclerViewAdapter) mAdapter).deleteItem(index);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent();
-                i.setClass(MainActivity.this, StationPickerActivity.class);
-                startActivity(i);
-            }
-        });
+        presenter = new StationPickerPresenterImpl(this, this);
+        mBus = new Bus();
     }
 
     @Override
@@ -73,7 +66,13 @@ public class MainActivity extends AppCompatActivity implements StationListView {
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.onResume();
+        mBus.register(this);
+        try {
+            presenter.onResume();
+        } catch (JSONException e) {
+            Log.e("StationPicker",e.toString(),e);
+            showMessage(e.toString());
+        }
     }
 
     @Override
@@ -92,10 +91,36 @@ public class MainActivity extends AppCompatActivity implements StationListView {
     }
 
     @Override
-    public void setStations(List<Station> stations) {
+    public void setStations(final List<Station> stations) {
+        refreshView(stations);
+    }
+
+    private void refreshView(final List<Station> stations) {
         mAdapter = new StationAdapter(stations);
         mRecyclerView.setAdapter(mAdapter);
+        ItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                presenter.onItemCliked(stations.get(position));
+                finish();
+            }
+        });
     }
+
+    @Subscribe
+    public void onGetListStationEvent(GetListStationEvent event){
+        refreshView(event.stations);
+    }
+
+    @Subscribe
+    public void onGetLogEvent(LogEvent event){
+        if(BuildConfig.DEBUG)
+        {
+            //TODO put log here before release the market
+        }
+        showMessage(event.log);
+    }
+
 
     @Override
     public void showMessage(String msg) {
@@ -103,13 +128,27 @@ public class MainActivity extends AppCompatActivity implements StationListView {
         Snackbar.make(container, msg, Snackbar.LENGTH_SHORT).show();
     }
 
-    @Override public void showProgress() {
+    @Override
+    public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.INVISIBLE);
     }
 
-    @Override public void hideProgress() {
+    @Override
+    public void hideProgress() {
         progressBar.setVisibility(View.INVISIBLE);
         mRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mBus.unregister(this);
     }
 }

@@ -1,4 +1,4 @@
-package com.willycode.bito.Model;
+package com.willycode.bito.Data.Local;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,11 +8,11 @@ import android.provider.BaseColumns;
 /**
  * Created by Manuel ELO'O on 05/01/2016.
  */
-public class StationDbHelper extends SQLiteOpenHelper {
+public class db extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Bito.db";
-    private static StationDbHelper mDbHelper;
+    private static db mDbHelper;
 
     /* Inner class that defines the table contents */
     public static abstract class StationEntry implements BaseColumns {
@@ -32,17 +32,17 @@ public class StationDbHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + StationEntry.TABLE_NAME;
 
-    private StationDbHelper(Context context) {
+    private db(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public static synchronized StationDbHelper getInstance(Context context) {
+    public static synchronized db getInstance(Context context) {
 
         // Use the application context, which will ensure that you
         // don't accidentally leak an Activity's context.
         // See this article for more information: http://bit.ly/6LRzfx
         if (mDbHelper == null) {
-            mDbHelper = new StationDbHelper(context.getApplicationContext());
+            mDbHelper = new db(context.getApplicationContext());
         }
         return mDbHelper;
     }

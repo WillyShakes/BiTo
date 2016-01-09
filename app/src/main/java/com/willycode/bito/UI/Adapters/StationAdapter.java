@@ -1,4 +1,4 @@
-package com.willycode.bito.Adapters;
+package com.willycode.bito.UI.Adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.willycode.bito.Model.Station;
+import com.willycode.bito.Data.Model.Station;
 import com.willycode.bito.R;
 
 import java.util.List;
@@ -61,9 +61,11 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.ViewHold
         // - replace the contents of the view with that element
         Station s = mDataset.get(position);
         holder.nameTextView.setText(s.getName());
-        holder.descView.setText(s.getDescription());
-        holder.freeBikeView.setText(s.getFree_bikes()+" free bikes");
-        holder.emptySlotTextView.setText(s.getEmpty_slots()+" empty slots");
+        //TODO s.getExtra().getDescription > null
+        holder.descView.setText(s.getExtra().getDescription());
+        //TODO create String for free bikes and empty slot
+        holder.freeBikeView.setText(s.getFreeBikes()+" free bikes");
+        holder.emptySlotTextView.setText(s.getEmptySlots()+" empty slots");
     }
 
     // Return the size of your dataset (invoked by the layout manager)

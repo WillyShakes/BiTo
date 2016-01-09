@@ -1,8 +1,8 @@
-package com.willycode.bito.Presenter.FavoriteStation;
+package com.willycode.bito.UI.FavoriteStation;
 
 import android.content.Context;
 
-import com.willycode.bito.Model.Station;
+import com.willycode.bito.Data.Model.Station;
 import com.willycode.bito.Utils.OnFinshListener;
 
 /**
@@ -10,5 +10,4 @@ import com.willycode.bito.Utils.OnFinshListener;
  */
 public interface StationListInteractor {
     public void loadStaions(OnFinshListener listener,Context c);
-    public void addNewStation(Station station,Context c);
 }
