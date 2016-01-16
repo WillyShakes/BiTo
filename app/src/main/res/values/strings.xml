@@ -1,4 +1,22 @@
 <resources>
     <string name="app_name">BiTo</string>
     <string name="action_settings">Settings</string>
+    <string name="favorite_stations">Stazioni [TO] Preferite</string>
+    <string name="station_picker">Scegli una stazione</string>
+    <string name="free_bikes">Bici libere</string>
+    <string name="empty_slots">Posti liberi</string>
+    <string name="free_bike">Bici libera</string>
+    <string name="empty_slot">Posto libero</string>
+    <string name="rename_station">Rinomina la stazione</string>
+    <string name="action_delete">Cancellare</string>
+    <string name="title_activity_bito">BitoActivity</string>
+    <string name="app_tag_line">Bici a Torino</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="stazioni_favorite">Stazioni favorite</string>
+    <string name="tweets">Tweets ambientali</string>
+    <string name="share">Condividi</string>
+    <string name="feedback">Manda Feedback</string>
+    <string name="title_activity_start">StartActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>

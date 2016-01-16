@@ -1,13 +1,12 @@
 package com.willycode.bito.Data;
 
 import android.app.IntentService;
-import android.app.Service;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.IBinder;
+
+import com.squareup.otto.Bus;
+import com.willycode.bito.Utils.EventPosterHelper;
+import com.willycode.bito.Utils.Events.LogEvent;
+import com.willycode.bito.Utils.NetworkHelper;
 
 /**
  * Created by Manuel ELO'O on 09/01/2016.
@@ -33,16 +32,13 @@ public class SyncService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         // do some work here, like download a file.
-        if (!isNetworkConnected(this)) {
-            // Send log event : "Sync canceled, connection not available"
+        if (!NetworkHelper.isNetworkConnected(getApplicationContext())) {
+            LogEvent event = new LogEvent("Sync canceled, connection not available");
+            EventPosterHelper eph = new EventPosterHelper(new Bus());
+            eph.postEventSafely(event);
         }
         mDataManager.syncStations();
     }
 
-    private boolean isNetworkConnected(SyncService syncService) {
-        ConnectivityManager cm =
-                (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-    }
+
 }

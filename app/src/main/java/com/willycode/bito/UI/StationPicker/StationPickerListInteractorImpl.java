@@ -4,8 +4,9 @@ import android.content.Context;
 
 import com.willycode.bito.Data.DataManager;
 import com.willycode.bito.Data.Model.Station;
-import com.willycode.bito.Data.Local.DatabaseHelper;
+import com.willycode.bito.Utils.Events.LogEvent;
 import com.willycode.bito.Utils.JsonParser;
+import com.willycode.bito.Utils.NetworkHelper;
 import com.willycode.bito.Utils.OnFinshListener;
 
 import org.json.JSONException;
@@ -20,9 +21,15 @@ public class StationPickerListInteractorImpl implements StationPickerListInterac
 
     @Override
     public void loadStations(OnFinshListener listener, Context c) throws JSONException {
-        //TODO If internet get json from API
-        JsonParser jp = new JsonParser();
-        List<Station> stations = jp.getStations();
+        List<Station> stations;
+        if (NetworkHelper.allStations != null  && !NetworkHelper.allStations.isEmpty()) {
+           stations = NetworkHelper.allStations;
+        }
+        else
+        {
+            JsonParser jp = new JsonParser();
+            stations = jp.getStations();
+        }
         listener.onFinished(stations);
     }
 
@@ -32,7 +39,7 @@ public class StationPickerListInteractorImpl implements StationPickerListInterac
         try {
             dt.addStation(s);
         } catch (JSONException e) {
-
+            DataManager.getInstance().postEvent(new LogEvent(e.getMessage()));
         }
     }
 }

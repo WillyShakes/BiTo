@@ -7,6 +7,8 @@ import com.willycode.bito.Data.Remote.TobikeInterface;
 import com.willycode.bito.Utils.EventPosterHelper;
 import com.willycode.bito.Utils.Events.GetListStationEvent;
 import com.willycode.bito.Utils.Events.LogEvent;
+import com.willycode.bito.Utils.Events.SyncFinishedEvent;
+import com.willycode.bito.Utils.NetworkHelper;
 
 import org.json.JSONException;
 
@@ -55,6 +57,7 @@ public class DataManager {
             public void success(ToBikeNetwork toBikeNetwork, Response response) {
                 if (response.getStatus() == 200) {
                     List<Station> stations = toBikeNetwork.getNetwork().getStations();
+                    NetworkHelper.allStations = stations;
                     List<Station> toUpdate = new ArrayList<Station>();
                     try {
                         List<Station> internalStations = mDatabaseHelper.getAllStations();
@@ -65,28 +68,28 @@ public class DataManager {
                                 }
                             }
                         }
-
                         for (int j = 0; j < toUpdate.size(); j++) {
                             mDatabaseHelper.updateStation(toUpdate.get(j));
                         }
+                        GetListStationEvent event = new GetListStationEvent(toUpdate);
+                        mEventPoster.postEventSafely(event);
                     } catch (JSONException e) {
                         LogEvent event = new LogEvent(e.getMessage());
                         mEventPoster.postEventSafely(event);
                     }
-
-                    GetListStationEvent event = new GetListStationEvent(toUpdate);
-                    mEventPoster.postEventSafely(event);
                 } else {
                     int statusCode = response.getStatus();
                     LogEvent event = new LogEvent(statusCode + " " + response.getReason());
                     mEventPoster.postEventSafely(event);
                 }
+                mEventPoster.postEventSafely(new SyncFinishedEvent());
             }
 
             @Override
             public void failure(RetrofitError error) {
                 LogEvent event = new LogEvent(error.getMessage());
                 mEventPoster.postEventSafely(event);
+                mEventPoster.postEventSafely(new SyncFinishedEvent());
             }
         });
     }
@@ -96,6 +99,27 @@ public class DataManager {
     }
 
     public void addStation(Station s) throws JSONException {
-        mDatabaseHelper.addStation(s);
+        List<Station> list = mDatabaseHelper.getAllStations();
+        Boolean exist = false;
+        for(int i = 0; i < list.size(); i++){
+            if(list.get(i).getId().equals(s.getId()))
+            {
+                exist = true;
+                break;
+            }
+        }
+        if(!exist)
+            mDatabaseHelper.addStation(s);
+    }
+
+    public void updateStation(Station s) throws JSONException {
+        mDatabaseHelper.updateStation(s);
+    }
+    public void postEvent(Object event){
+        mEventPoster.postEventSafely(event);
+    }
+
+    public void deleteStation(Station station) {
+        mDatabaseHelper.deleteStation(station);
     }
 }

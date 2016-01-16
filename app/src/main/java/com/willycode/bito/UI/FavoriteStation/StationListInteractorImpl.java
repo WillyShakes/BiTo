@@ -3,8 +3,6 @@ package com.willycode.bito.UI.FavoriteStation;
 import android.content.Context;
 
 import com.willycode.bito.Data.DataManager;
-import com.willycode.bito.Data.Model.Station;
-import com.willycode.bito.Data.Local.DatabaseHelper;
 import com.willycode.bito.Utils.OnFinshListener;
 
 import org.json.JSONException;
@@ -24,5 +22,4 @@ public class StationListInteractorImpl implements StationListInteractor{
             listener.onError(e);
         }
     }
-
 }

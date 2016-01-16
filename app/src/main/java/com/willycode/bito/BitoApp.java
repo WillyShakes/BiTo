@@ -2,7 +2,7 @@ package com.willycode.bito;
 
 import android.app.Application;
 
-import com.squareup.otto.Bus;
+import com.willycode.bito.Data.BusProvider;
 import com.willycode.bito.Data.DataManager;
 import com.willycode.bito.Data.Local.DatabaseHelper;
 import com.willycode.bito.Data.Remote.TobikeInterface;
@@ -19,7 +19,7 @@ public class BitoApp extends Application {
         DataManager dt = DataManager.getInstance();
         TobikeInterface tobikeService = new TobikeRestClient().getRestClient();
         DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext());
-        EventPosterHelper evPostHelper = new EventPosterHelper(new Bus());
+        EventPosterHelper evPostHelper = new EventPosterHelper(BusProvider.getInstance());
         dt.setDataProvider(tobikeService,dbHelper,evPostHelper);
     }
 }

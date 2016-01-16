@@ -55,6 +55,14 @@ public class DatabaseHelper {
         return db.update(com.willycode.bito.Data.Local.db.StationEntry.TABLE_NAME, values, com.willycode.bito.Data.Local.db.StationEntry.COLUMN_NAME_ID + " = ?",
                 new String[] { station.getId() });
     }
+    // Deleting single Station
+    public void deleteStation(Station station) {
+        db mDbHelper = db.getInstance(context);
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        db.delete(com.willycode.bito.Data.Local.db.StationEntry.TABLE_NAME, com.willycode.bito.Data.Local.db.StationEntry.COLUMN_NAME_ID + " = ?",
+                new String[]{station.getId()});
+        db.close();
+    }
 
 
     // Getting All Stations

@@ -35,6 +35,16 @@ public class Station {
     @Expose
     public String timestamp;
 
+    public String getFavName() {
+        return favName;
+    }
+
+    public void setFavName(String favName) {
+        this.favName = favName;
+    }
+
+    public String favName = "";
+
     public String getTimestamp() {
         return timestamp;
     }
@@ -108,6 +118,7 @@ public class Station {
     private final String LNG = "longitude";
     private final String NAME = "name";
     private final String TIMESTAMP = "timestamp";
+    private final String FAVNAME = "fav_name";
 
 
     public JSONObject toJson() throws JSONException {
@@ -122,6 +133,7 @@ public class Station {
         ret.put(LNG,longitude);
         ret.put(NAME,name);
         ret.put(TIMESTAMP,timestamp);
+        ret.put(FAVNAME,favName);
         return ret;
     }
 
@@ -139,5 +151,9 @@ public class Station {
         setLongitude(Double.valueOf(station.getString(LNG)));
         setName(station.getString(NAME));
         setTimestamp(station.getString(TIMESTAMP));
+        if(!station.isNull(FAVNAME))
+        {
+            setFavName(station.getString(FAVNAME));
+        }
     }
 }
